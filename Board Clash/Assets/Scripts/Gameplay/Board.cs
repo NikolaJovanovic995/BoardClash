@@ -6,7 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(SquareSelectorCreator))]
 public class Board : MonoBehaviour
 {
-    public const int BOARD_SIZE = 8;
+    public const int BOARD_WIDTH = 8;
+    public const int BOARD_DEPTH = 16;
 
     [SerializeField] private Transform bottomLeftSquareTransform;
     [SerializeField] private float squareSize;
@@ -32,7 +33,7 @@ public class Board : MonoBehaviour
 
     private void CreateGrid()
     {
-        grid = new Piece[BOARD_SIZE, BOARD_SIZE];
+        grid = new Piece[BOARD_WIDTH, BOARD_DEPTH];
     }
 
     public Vector3 CalculatePositionFromCoords(Vector2Int coords)
@@ -42,14 +43,15 @@ public class Board : MonoBehaviour
 
     private Vector2Int CalculateCoordsFromPosition(Vector3 inputPosition)
     {
-        int x = Mathf.FloorToInt(transform.InverseTransformPoint(inputPosition).x / squareSize) + BOARD_SIZE / 2;
-        int y = Mathf.FloorToInt(transform.InverseTransformPoint(inputPosition).z / squareSize) + BOARD_SIZE / 2;
+        int x = Mathf.FloorToInt(transform.InverseTransformPoint(inputPosition).x / squareSize) + BOARD_WIDTH / 2;
+        int y = Mathf.FloorToInt(transform.InverseTransformPoint(inputPosition).z / squareSize) + BOARD_DEPTH / 2;
         return new Vector2Int(x, y);
     }
 
     public void OnSquareSelected(Vector3 inputPosition)
     {
         Vector2Int coords = CalculateCoordsFromPosition(inputPosition);
+        Debug.Log(coords.ToString());
         Piece piece = GetPieceOnSquare(coords);
         if (selectedPiece)
         {
@@ -121,16 +123,16 @@ public class Board : MonoBehaviour
 
     public bool CheckIfCoordinatesAreOnBoard(Vector2Int coords)
     {
-        if (coords.x < 0 || coords.y < 0 || coords.x >= BOARD_SIZE || coords.y >= BOARD_SIZE)
+        if (coords.x < 0 || coords.y < 0 || coords.x >= BOARD_WIDTH || coords.y >= BOARD_DEPTH)
             return false;
         return true;
     }
 
     public bool HasPiece(Piece piece)
     {
-        for (int i = 0; i < BOARD_SIZE; i++)
+        for (int i = 0; i < BOARD_WIDTH; i++)
         {
-            for (int j = 0; j < BOARD_SIZE; j++)
+            for (int j = 0; j < BOARD_DEPTH; j++)
             {
                 if (grid[i, j] == piece)
                     return true;

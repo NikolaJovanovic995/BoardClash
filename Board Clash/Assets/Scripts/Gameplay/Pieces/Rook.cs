@@ -9,7 +9,7 @@ public class Rook : Piece
     {
         avaliableMoves.Clear();
 
-        float range = Board.BOARD_SIZE;
+        float range = Board.BOARD_WIDTH;
         foreach (var direction in directions)
         {
             for (int i = 1; i <= range; i++)
